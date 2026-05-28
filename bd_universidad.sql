@@ -191,7 +191,6 @@ GO
 /*
    Ejercicio 05: Agregar columnas nuevas con ALTER TABLE ADD
     */
-
 -- SQL Server usa ADD sin la palabra COLUMN.
 ALTER TABLE dbo.ESTUDIANTE
     ADD telefono NVARCHAR(20) NULL;
@@ -223,16 +222,15 @@ GO
 -- como vistas, procedimientos o funciones que usen el nombre anterior podrían romperse.
 -- A diferencia de MySQL, SQL Server no actualiza automáticamente todas esas referencias textuales.
 EXEC sp_rename
-    N'dbo.CARRERA.duracion_anios',
-    N'duracion',
-    N'COLUMN';
+    N'CARRERA.duracion_anios',  -- nombre actual: tabla.columna
+    N'duracion',                  -- nuevo nombre
+    N'COLUMN';                    -- tipo: COLUMN, OBJECT, INDEX
 GO
-
 -- Cambiar nota_final de DECIMAL(4,2) a DECIMAL(5,2).
 ALTER TABLE dbo.INSCRIPCION
     ALTER COLUMN nota_final DECIMAL(5,2) NULL;
 GO
-
+select * from CARRERA
 /* 
    Ejercicio 07: Gestionar restricciones e índices
   */

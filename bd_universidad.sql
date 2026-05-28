@@ -93,27 +93,27 @@ CREATE TABLE dbo.ESTUDIANTE (
         REFERENCES dbo.CARRERA (id_carrera)
         ON DELETE NO ACTION
         ON UPDATE CASCADE
-
-     
+        /*Tanto on delete no action como restrict se utilizan para impedir que se borre una tabja padre si tiene registos hijos
+        su diferencia es que restrict se ejecuta de inmediato y no action al final de la instruccion.
+     */
 );
 GO
 
 -- Verificar la FK creada.
-SELECT *
-FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS;
-GO
+select * from INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
 
 -- Intento controlado de insertar un estudiante con id_carrera inexistente.
+begin try
+    insert into ESTUDIANTE(carnet,nombre_completo,fecha_nacimiento,email,id_carrera)
+    values(25011543,'Sara Ruiz','2007-08-22','sararuiz@gmail.com',452365)
+end try
+begin catch
+    select ERROR_NUMBER() as error,
+    ERROR_MESSAGE() as descripcion,
+    ERROR_LINE() as linea
+end catch
+    
 
-BEGIN TRY
-    INSERT INTO dbo.ESTUDIANTE (carnet, nombre_completo, fecha_nacimiento, email, id_carrera)
-    VALUES (N'ERR000001', N'Estudiante con carrera inexistente', '2006-01-01', N'error@uam.edu.ni', 9999);
-END TRY
-BEGIN CATCH
-    SELECT ERROR_NUMBER() AS numero_error,
-           ERROR_MESSAGE() AS mensaje_error;
-END CATCH;
-GO
 
 -- Datos base válidos para continuar con las pruebas.
 INSERT INTO dbo.CARRERA (nombre, duracion_anios, modalidad)
